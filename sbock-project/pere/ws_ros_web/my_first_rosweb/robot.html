@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="assets/favicon.png">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="free template, bootstrap, bootstrap4" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+  <link rel="stylesheet" href="fonts/feather/style.css">
+  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="css/aos.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+  <script src="js/robot.js"></script>
+
+  <title>SBOCK - Control de stock</title>
+</head>
+<body>
+  <div class="lines-wrap">
+    <div class="lines-inner">
+      <div class="lines"></div>
+    </div>
+  </div>
+  <!-- END lines -->
+
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+
+  <nav class="site-nav">
+    <div class="container">
+      <div class="site-navigation">
+        <a href="index.html" class="logo float-left m-0">S-BOCK <span class="text-primary">.</span></a>
+
+        <ul class="js-clone-nav d-none d-lg-inline-noone text-left site-menu">
+          <li><a href="index.html">Inicio</a></li>
+          <li class="active"><a href="robot.html">Panel administrador</a></li>
+          <li><a href="elements.html">Iniciar sesión</a></li>
+          <li><a href="about.html">Sobre S-BOCK</a></li>
+          <li><a href="contact.html">Contacte con nosotros</a></li>
+        </ul>
+
+        <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-block" data-toggle="collapse" data-target="#main-navbar">
+          <span></span>
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="custom-hero">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <h1 >Control del robot</h1>
+          <div  class="line js-line mx-auto mb-3 my-3"></div>
+          <form name="form" class="mb-2" method="get">
+            <label class="text-black" for="email">IP del servidor</label>
+            <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="dir_server" id="dir_server">
+          </form>
+          <div class="text-white">
+            <button class="btn-xl rounded-pill mt-2 btn btn-success" id="btn_con">Conectar</button>
+            <button class="btn-xl rounded-pill mt-2 btn btn-danger" id="btn_dis">Desconectar</button>
+          </div>
+          <div class="card-body" id="panel_control">
+            <h2 id="title">Panel de control</h2>
+            <button class="mt-2 btn btn-primary" id="btn_move">Mover</button>
+            <button class="mt-2 btn btn-primary" id="btn_stop">Parar</button>
+            <button class="mt-2 btn btn-primary" id="btn_turn">Cambiar sentido</button>
+        </div>
+        
+        
+        <div class="container d-flex align-items-center justify-content-center">
+          <div class="col-6 row justify-content-center">
+            <p>Posición actual del robot</p>
+            <p>
+            <span>X: <span id="pos_x"></span></span>
+            <br>
+            <span>Y: <span id="pos_y"></span></span>
+          </p>
+          </div>
+          <div class="col-1 mr-3 row d-flex align-self-center">
+            <img class="btn" id="btn_left" src="assets/img/izquierda.png"></img>
+          </div>
+          <div class="col-1 mr-3 row d-flex flex-column">
+            <img class="btn" id="btn_up" src="assets/img/arriba.png"></img>
+            <img class="btn" id="btn_pausa" src="assets/img/pausa.png"></img>
+            <img class="btn" id="btn_down" src="assets/img/abajo2.png"></img>
+          </div>
+          <div class="col-1 row d-flex align-self-center">
+            <img class="btn" id="btn_right" src="assets/img/derecha.png"></img>
+          </div>
+        </div>
+          
+        
+        
+      </div>
+        
+      </div>
+    </div>
+  </div>
+    
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+  </div>
+
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="js/jquery-migrate-3.0.0.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/imagesloaded.pkgd.js"></script>
+  <script src="js/isotope.pkgd.min.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jarallax.min.js"></script>
+  <script src="js/jarallax-element.min.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.fancybox.min.js"></script>
+
+  <script src="js/jquery.lettering.js"></script>
+
+
+  <script src="js/TweenMax.min.js"></script>
+  <script src="js/ScrollMagic.min.js"></script>
+  <script src="js/scrollmagic.animation.gsap.min.js"></script>
+  <script src="js/debug.addIndicators.min.js"></script>
+
+
+  <script src="js/custom.js"></script>
+
+    
+</body>
+</html>
