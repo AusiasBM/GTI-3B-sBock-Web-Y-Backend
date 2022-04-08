@@ -24,16 +24,15 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+
+  <script src="https://static.robotwebtools.org/EaselJS/current/easeljs.js"></script>
+  <script src="https://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+  <script src="https://static.robotwebtools.org/roslibjs/current/roslib.js"></script>
   <script src="js/robot.js"></script>
 
   <title>SBOCK - Control de stock</title>
 </head>
 <body>
-  <div class="lines-wrap">
-    <div class="lines-inner">
-      <div class="lines"></div>
-    </div>
-  </div>
   <!-- END lines -->
 
   <div class="site-mobile-menu site-navbar-target">
@@ -70,44 +69,69 @@
   <div class="custom-hero">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-5">
+        <div class="col-lg-12">
           <h1 >Control del robot</h1>
           <div  class="line js-line mx-auto mb-3 my-3"></div>
-          <form name="form" class="mb-2" method="get">
-            <label class="text-black" for="email">IP del servidor</label>
-            <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="dir_server" id="dir_server">
-          </form>
           <div class="text-white">
             <button class="btn-xl rounded-pill mt-2 btn btn-success" id="btn_con">Conectar</button>
             <button class="btn-xl rounded-pill mt-2 btn btn-danger" id="btn_dis">Desconectar</button>
           </div>
-          <div class="card-body" id="panel_control">
-            <h2 id="title">Panel de control</h2>
-            <button class="mt-2 btn btn-primary" id="btn_move">Mover</button>
-            <button class="mt-2 btn btn-primary" id="btn_stop">Parar</button>
-            <button class="mt-2 btn btn-primary" id="btn_turn">Cambiar sentido</button>
         </div>
         
         
-        <div class="container d-flex align-items-center justify-content-center">
-          <div class="col-6 row justify-content-center">
-            <p>Posición actual del robot</p>
-            <p>
-            <span>X: <span id="pos_x"></span></span>
-            <br>
-            <span>Y: <span id="pos_y"></span></span>
-          </p>
+        <div class="container d-flex align-items-center justify-content-between col-12">
+          <div class="col-lg-6">
+            <p>Aqui va el mapa</p>
           </div>
-          <div class="col-1 mr-3 row d-flex align-self-center">
-            <img class="btn" id="btn_left" src="assets/img/izquierda.png"></img>
-          </div>
-          <div class="col-1 mr-3 row d-flex flex-column">
-            <img class="btn" id="btn_up" src="assets/img/arriba.png"></img>
-            <img class="btn" id="btn_pausa" src="assets/img/pausa.png"></img>
-            <img class="btn" id="btn_down" src="assets/img/abajo2.png"></img>
-          </div>
-          <div class="col-1 row d-flex align-self-center">
-            <img class="btn" id="btn_right" src="assets/img/derecha.png"></img>
+
+
+
+          <div class="col-lg-6">
+            <div class="custom-accordion" id="accordion_1">
+              <div class="accordion-item">
+                <h2 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Navegación manual</button>
+                </h2>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_1">
+                  <div class="col-6"></div>
+                  <div class="col-6 accordion-body d-flex align-items-center justify-content-center col-4">
+                    <div class="col-3 mr-5 row d-flex align-self-center">
+                      <img class="btn" id="btn_left" src="assets/img/izquierda.png"></img>
+                    </div>
+                    <div class="col-3 mr-5 ml-2 row d-flex flex-column">
+                      <img class="btn" id="btn_up" src="assets/img/arriba.png"></img>
+                      <img class="btn" id="btn_down" src="assets/img/abajo.png"></img>
+                    </div>
+                    <div class="col-3 ml-2 row d-flex align-self-center">
+                      <img class="btn" id="btn_right" src="assets/img/derecha.png"></img>
+                    </div>  
+                  </div>
+                </div>
+              </div> <!-- .accordion-item -->
+    
+              <div class="accordion-item">
+                <h2 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Navegación automática</button>
+                </h2>
+
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion_1">
+                  <div class=" accordion-body">
+                    <div class="container d-flex column justify-content-center">
+                      <p>Posición &nbsp;&nbsp;--&nbsp;&nbsp; Orientación</p>
+                  </div>
+                    <div class="container d-flex column justify-content-center">
+                        <p class="col-3">X: <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="posX" id="posX"></p> 
+                        <p class="col-3">Y: <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="posY" id="posY"></p> 
+                      
+                        <p class="col-3">Z: <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="posY" id="posZ"></p> 
+                        <p class="col-3">W: <input type="text" name="dir_server" id="dir_server" class="form-control d-inline-flex" name="posY" id="posW"></p> 
+                  
+                    </div>
+                    <button class="btn-xl rounded-pill mt-2 btn btn-success" id="btn_nav_auto">Navegar al punto</button>
+                  </div>
+                </div>
+              </div> <!-- .accordion-item -->
+            </div>
           </div>
         </div>
           
