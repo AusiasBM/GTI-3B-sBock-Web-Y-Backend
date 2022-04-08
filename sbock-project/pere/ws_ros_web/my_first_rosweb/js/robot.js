@@ -14,9 +14,7 @@ document.addEventListener('DOMContentLoaded', event => {
 
     document.getElementById("btn_con").addEventListener("click", connect)
     document.getElementById("btn_dis").addEventListener("click", disconnect)
-    document.getElementById("btn_move").addEventListener("click", move)
-    document.getElementById("btn_stop").addEventListener("click", pause)
-    document.getElementById("btn_turn").addEventListener("click", cambiar_sentido)
+
     document.getElementById("btn_up").addEventListener("click", () => {
         call_delante_service("delante")
     })
@@ -76,60 +74,6 @@ document.addEventListener('DOMContentLoaded', event => {
         data.ros.close()        
         data.connected = false
         console.log('Clic en botón de desconexión')
-    }
-
-    function move(){
-        let topic = new ROSLIB.Topic({
-            ros: data.ros,
-            name: '/cmd_vel',
-            messageType: 'geometry_msgs/msg/Twist'
-        })
-        let message = new ROSLIB.Message({
-            linear: {x: 0.1, y: 0, z: 0, },
-            angular: {x: 0, y: 0, z: -0.2, },
-        })
-        topic.publish(message)
-        btn_mover.style.display = 'none'
-        btn_stop.style.display = 'inline'
-        btn_turn.style.display = 'inline'
-    }
-
-    function pause() {
-        let topic = new ROSLIB.Topic({
-            ros: data.ros,
-            name: '/cmd_vel',
-            messageType: 'geometry_msgs/msg/Twist'
-        })
-        let message = new ROSLIB.Message({
-            linear: {x: 0.0, y: 0, z: 0, },
-            angular: {x: 0, y: 0, z: 0.0, },
-        })
-        topic.publish(message)
-        btn_mover.style.display = 'inline'
-        btn_stop.style.display = 'none'
-        btn_turn.style.display = 'none'
-    }
-
-    function cambiar_sentido() {
-        let topic = new ROSLIB.Topic({
-            ros: data.ros,
-            name: '/cmd_vel',
-            messageType: 'geometry_msgs/msg/Twist'
-        })
-        //if (message.angular.z == -0.2){
-            let message = new ROSLIB.Message({
-                linear: {x: 0.1, y: 0, z: 0, },
-                angular: {x: 0, y: 0, z: 0.2, },
-            })
-            topic.publish(message)
-        /*} else {
-            let message = new ROSLIB.Message({
-                linear: {x: 0.1, y: 0, z: 0, },
-                angular: {x: 0, y: 0, z: -0.2, },
-            })
-            topic.publish(message)
-        }
-        */
     }
 
     function call_delante_service(valor){
