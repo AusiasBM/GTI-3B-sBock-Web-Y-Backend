@@ -2,34 +2,44 @@ document.addEventListener('DOMContentLoaded', event => {
 
     var btn_conectar = document.getElementById("btn_con")
     var btn_desconectar = document.getElementById("btn_dis")
-    var btn_mover = document.getElementById("btn_move")
-    var btn_stop = document.getElementById("btn_stop")
-    var btn_turn = document.getElementById("btn_turn")
     var panel_control = document.getElementById("panel_control")
+    
+    let posXField = document.getElementById("pos_x")
+    let posYField = document.getElementById("pos_y")
+    let orienZField = document.getElementById("orien_z")
+    let orienWField = document.getElementById("orien_w")
+
 
     btn_desconectar.style.display = 'none'  
-    btn_stop.style.display = 'none'
-    btn_turn.style.display = 'none'
-    panel_control.style.display = 'none'
 
+    document.getElementById("btn_nav_auto").addEventListener("click", navPoseHandler)
     document.getElementById("btn_con").addEventListener("click", connect)
     document.getElementById("btn_dis").addEventListener("click", disconnect)
 
-    document.getElementById("btn_up").addEventListener("click", () => {
-        call_delante_service("delante")
-    })
-    document.getElementById("btn_down").addEventListener("click", () => {
-        call_delante_service("atras")
-    })
-    document.getElementById("btn_right").addEventListener("click", () => {
-        call_delante_service("derecha")
-    })
-    document.getElementById("btn_left").addEventListener("click", () => {
-        call_delante_service("izquierda")
-    })
-    document.getElementById("btn_pausa").addEventListener("click", () => {
-        call_delante_service("parar")
-    })
+    let btnUp = document.getElementById('btn_up');
+    btnUp.addEventListener('mousedown', upStartHandler, false);
+    btnUp.addEventListener('mouseup', endHandler, false);
+    btnUp.addEventListener('touchstart', upStartHandler, false);
+    btnUp.addEventListener('touchend', endHandler, false);
+
+    let btnDown = document.getElementById('btn_down');
+    btnDown.addEventListener('mousedown', downStartHandler, false);
+    btnDown.addEventListener('mouseup', endHandler, false);
+    btnDown.addEventListener('touchstart', downStartHandler, false);
+    btnDown.addEventListener('touchend', endHandler, false);
+
+    let btnLeft = document.getElementById('btn_left');
+    btnLeft.addEventListener('mousedown', leftStartHandler, false);
+    btnLeft.addEventListener('mouseup', endHandler, false);
+    btnLeft.addEventListener('touchstart', leftStartHandler, false);
+    btnLeft.addEventListener('touchend', endHandler, false);
+
+    let btnRight = document.getElementById('btn_right');
+    btnRight.addEventListener('mousedown', rightStartHandler, false);
+    btnRight.addEventListener('mouseup', endHandler, false);
+    btnRight.addEventListener('touchstart', rightStartHandler, false);
+    btnRight.addEventListener('touchend', endHandler, false);
+
 
     data = {
         // ros connection
@@ -54,7 +64,6 @@ document.addEventListener('DOMContentLoaded', event => {
             console.log("Conexion con ROSBridge correcta")
             btn_conectar.style.display = 'none'
             btn_desconectar.style.display = 'inline'
-            panel_control.style.display = 'inline'
         })
         data.ros.on("error", (error) => {
             console.log("Se ha producido algun error mientras se intentaba realizar la conexion")
@@ -69,6 +78,7 @@ document.addEventListener('DOMContentLoaded', event => {
         })
     }
 
+    
     function disconnect(){
         pause()
         data.ros.close()        
@@ -76,7 +86,32 @@ document.addEventListener('DOMContentLoaded', event => {
         console.log('Clic en botón de desconexión')
     }
 
-    function call_delante_service(valor){
+    function upStartHandler() {
+        call_move_service("delante")
+    }
+
+    function downStartHandler() {
+        call_move_service("atras")
+    }
+
+    function leftStartHandler() {
+        call_move_service("izquierda")
+    }
+
+    function rightStartHandler() {
+        call_move_service("derecha")
+    }
+
+    function endHandler() {
+        call_move_service("parar")
+    }
+
+    function navPoseHandler(){
+        gotopose(posXField.value, posYField.value, orienZField.value, orienWField.value)
+    }
+
+    //Función para mover el robot de forma manual
+    function call_move_service(valor){
         data.service_busy = true
         data.service_response = ''	
     
@@ -84,7 +119,7 @@ document.addEventListener('DOMContentLoaded', event => {
         let service = new ROSLIB.Service({
             ros: data.ros,
             name: '/movement',
-            serviceType: 'custom_interface/srv/MyMoveMsg'
+            serviceType: 'sbock_custom_interface/srv/MyMoveMsg'
         })
     
         let request = new ROSLIB.ServiceRequest({
@@ -99,5 +134,35 @@ document.addEventListener('DOMContentLoaded', event => {
             console.error(error)
         })	
     }
+
+    //Funció para mandar la posicióna la que navegar
+    function gotopose(pos_x = 0.0, pos_y = 0.0, orien_z = 0.0, orien_w = 0.0){
+        console.log("Clic en gotopose")
+        data.service_busy = true
+        data.service_response = ''	
+    
+      //definimos los datos del servicio
+        let service = new ROSLIB.Service({
+            ros: data.ros,
+            name: '/nav_pose',
+            serviceType: 'sbock_custom_interface/srv/NavToPose'
+        })
+    
+        let request = new ROSLIB.ServiceRequest({
+            pos_x: parseFloat(pos_x),
+            pos_y: parseFloat(pos_y),
+            orien_z: parseFloat(orien_z),
+            orien_w: parseFloat(orien_w),
+        })
+    
+        service.callService(request, (result) => {
+            data.service_busy = false
+            data.service_response = JSON.stringify(result)
+        }, (error) => {
+            data.service_busy = false
+            console.error(error)
+        })	
+    }
+
     
 });
